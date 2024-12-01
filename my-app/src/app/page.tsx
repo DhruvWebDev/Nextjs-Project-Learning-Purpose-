@@ -23,37 +23,16 @@ import {
   Star,
 } from "lucide-react";
 import Link from "next/link";
-
-export default function Component() {
+import { testimonials } from "@/components/testimonials";
+export default function LandingPage() {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
-
-  const testimonials = [
-    {
-      name: "John Doe",
-      role: "Project Manager",
-      quote:
-        "TaskFlow has revolutionized how we manage our projects. It's intuitive and powerful.",
-    },
-    {
-      name: "Jane Smith",
-      role: "Team Lead",
-      quote:
-        "The real-time updates and collaboration features have boosted our team's productivity significantly.",
-    },
-    {
-      name: "Alex Johnson",
-      role: "CEO",
-      quote:
-        "TaskFlow's analytics have given us invaluable insights into our workflow efficiency.",
-    },
-  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, [testimonials.length]);
+  }, [testimonials?.length]); 
 
   return (
     <div className="min-h-screen bg-black text-white">
