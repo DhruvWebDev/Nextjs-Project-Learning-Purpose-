@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -24,15 +23,24 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { testimonials } from "@/components/testimonials";
-export default function Component() {
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+import {
+  SignIn,
+  useUser,
+  UserButton,
+  SignedIn,
+  SignedOut,
+} from "@clerk/nextjs";
 
+export default function Component() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
     }, 5000);
     return () => clearInterval(interval);
   }, [testimonials.length]);
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [showSignIn, setShowSignIn] = useState(false);
+  const { user } = useUser();
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -56,17 +64,11 @@ export default function Component() {
             Blog
           </Link>
           <Link
-            href="#"
+            href="/signin"
             className="text-sm text-gray-300 hover:text-blue-400 transition-colors"
           >
             Showcase
           </Link>
-          <Button
-            variant="outline"
-            className="border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white transition-colors"
-          >
-            Login
-          </Button>
         </div>
       </header>
 
@@ -89,11 +91,11 @@ export default function Component() {
             </Button>
             <Button
               variant="outline"
-              className="border-blue-500 text-white hover:bg-blue-500 hover:text-white transition-colors"
+              className="border-blue-500 text-white hover:bg-blue-500 hover:text-blue transition-colors"
             >
               Learn More
             </Button>
-          </div>
+          </div>  
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent" />
       </section>
@@ -295,6 +297,7 @@ export default function Component() {
           Start Using TaskFlow
         </Button>
       </section>
-    </div>
+
+      </div>
   );
 }
