@@ -1,0 +1,37 @@
+import { useSession } from '@clerk/nextjs';
+import React, { useState } from 'react'
+
+const useFetch = (cb, options = {}) => {
+
+    const [data, setData] = useState<null | string>(null);
+    const [loading, setLoading] = useState<null | boolean>(null);
+    const [error, setError] = useState<any>(null);
+    
+    const {session}  = useSession();
+
+    const fn = async (...args) => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            const supabaseAccessToken = await session?.getToken({
+                template: "supabase",
+            })
+            console.log("Supabase Access Token:", supabaseAccessToken);
+
+            const response = await cb(supabaseAccessToken, options, ...args)
+            setData(response);
+            setError(null);
+            
+        } catch (error) {
+            console.error("Error in useFetch", error);
+            setError(error);
+        } finally {
+            setLoading(true)
+        }
+
+    }
+  return {data, error, loading, fn};
+}
+
+export default useFetch
