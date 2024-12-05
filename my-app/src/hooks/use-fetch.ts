@@ -15,7 +15,7 @@ const useFetch = (cb, options = {}) => {
 
         try {
             const supabaseAccessToken = await session?.getToken({
-                template: "supabase",
+                template: 'supabase',
             })
             console.log("Supabase Access Token:", supabaseAccessToken);
 

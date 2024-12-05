@@ -28,19 +28,17 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider
-    appearance={{
-      baseTheme:  [dark],
-    }}
-    publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
-    afterSignOutUrl="/"
-  >
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+      appearance={{
+        baseTheme: dark, // Correct theme assignment
+      }}
+      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+      afterSignOutUrl="/"
+    >
+      <html lang="en">
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          {children} {/* Render your app's content here */}
+        </body>
+      </html>
     </ClerkProvider>
   );
 }
