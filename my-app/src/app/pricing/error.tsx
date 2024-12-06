@@ -1,7 +1,14 @@
 "use client";
 
 import { useEffect } from "react";
-
+import { Terminal } from "lucide-react"
+ 
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert"
+import { Button } from "@/components/ui/button";
 export default function Error({
   error,
   reset,
@@ -16,15 +23,17 @@ export default function Error({
 
   return (
     <div>
-      <h2>Something went wrong!</h2>
-      <button
-        onClick={
+      <Alert variant={"destructive"}>
+      <Terminal className="h-4 w-4" />
+      <AlertTitle>Heads up!</AlertTitle>
+      <AlertDescription>
+      Something went wrong!
+      </AlertDescription>
+      <Button onClick={
           // Attempt to recover by trying to re-render the segment
           () => reset()
-        }
-      >
-        Try again
-      </button>
+        }>Try Again</Button>
+    </Alert>
     </div>
   );
 }
