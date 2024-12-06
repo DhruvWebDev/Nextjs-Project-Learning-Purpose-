@@ -1,5 +1,4 @@
 'use client'
-
 import { useEffect, useState } from 'react'
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
@@ -7,14 +6,18 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Moon, Sun, Globe } from 'lucide-react'
 import { useUser } from '@clerk/nextjs'
+import { useRouter } from 'next/navigation'
 
 export default function SettingsPage() {
-  const [darkMode, setDarkMode] = useState(true)
-  const {user} = useUser();
+  const {user, isLoaded} = useUser();
+  const router = useRouter();
 
   useEffect(() => {
-    console.log(user)
-  })
+    if(isLoaded && !user) {
+        router.push("/sign-in")
+    }
+}, [user, isLoaded])
+
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Grid Background */}
@@ -24,7 +27,7 @@ export default function SettingsPage() {
         <h1 className="text-3xl font-bold mb-8 text-white">Dashboard Settings</h1>
         
         <div className="grid gap-8 md:grid-cols-2">
-          <Card className="bg-gray-900 border-gray-800">
+          <Card className="bg-white-900 border-gray-800">
             <CardHeader>
               <CardTitle className="flex items-center text-white">
                 <Globe className="mr-2 text-white" />
@@ -62,26 +65,6 @@ export default function SettingsPage() {
                     <SelectItem value="au">Australia</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gray-900 border-gray-800">
-            <CardHeader>
-              <CardTitle className="flex items-center text-white">
-                {darkMode ? <Moon className="mr-2 text-white" /> : <Sun className="mr-2 text-white" />}
-                Appearance
-              </CardTitle>
-              <CardDescription>Customize the look of your dashboard</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="dark-mode">Dark Mode</Label>
-                <Switch
-                  id="dark-mode"
-                  checked={darkMode}
-                  onCheckedChange={setDarkMode}
-                />
               </div>
             </CardContent>
           </Card>

@@ -10,8 +10,10 @@ import { useRouter } from 'next/navigation';
 import useFetch from '@/hooks/use-fetch';
 import { getSidebar } from '@/api/apiSidebar';
 import { useUser } from '@clerk/nextjs';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Sidebarskeleton } from './sidebarSkeleton';
+import { SidebarOptionsDrawer } from './add-options-drawer';
+import { SidebarOrganizationDrawer } from './add-organization-drawer';
 
 const mainNavItems = [   
   { id: 'dashboard', label: 'Dashboard', icon: LayoutGrid, path: '/tasks' },   
@@ -26,12 +28,28 @@ export function Sidebar() {
   const { data: sidebarData, error, loading: loadingSidebarConfig, fn: fnSidebar } = useFetch(getSidebar, {
     user_id: user?.id,
   });
+
+  const [isOptionsDrawerOpen, setOptionsDrawerOpen] = useState(false);
+  const [isOrganizationDrawerOpen, setOrganizationDrawerOpen] = useState(false);
+
+  // Open Drawer on Button Click
+  const handleOptionsDrawerOpen = () => setOptionsDrawerOpen(true);
+  const handleOrganizationDrawerOpen = () => setOrganizationDrawerOpen(true);
+
+  // Close Drawers
+  const handleOptionsDrawerClose = () => setOptionsDrawerOpen(false);
+  const handleOrganizationDrawerClose = () => setOrganizationDrawerOpen(false);
+
   // Return a default sidebar if there's no sidebarData
-  if ( isLoaded) {
+  if (isLoaded) {
     return (
       <div className="h-screen w-64 bg-zinc-950 text-white border-r border-zinc-800">
         <div className="p-4">
-          <Button variant="outline" className="w-full justify-start gap-2 bg-zinc-900 border-zinc-800 hover:bg-zinc-800">
+          <Button
+            variant="outline"
+            className="w-full justify-start gap-2 bg-zinc-900 border-zinc-800 hover:bg-zinc-800"
+            onClick={handleOptionsDrawerOpen} // Open Options Drawer
+          >
             <Plus size={16} />
             New Task
           </Button>
@@ -60,9 +78,14 @@ export function Sidebar() {
             <div>
               <div className="flex items-center justify-between px-3 py-2">
                 <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">
-                  Organizations
+                  Organization Options
                 </h2>
-                <Button variant="ghost" size="icon" className="h-5 w-5 text-zinc-500 hover:text-white">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-5 w-5 text-zinc-500 hover:text-white"
+                  onClick={handleOrganizationDrawerOpen} // Open Organization Drawer
+                >
                   <Plus size={16} />
                 </Button>
               </div>
@@ -92,12 +115,17 @@ export function Sidebar() {
             </Link>
           </div>
         </ScrollArea>
+
+        {/* Option Drawer */}
+        <SidebarOptionsDrawer open={isOptionsDrawerOpen} onClose={handleOptionsDrawerClose} />
+
+        {/* Organization Drawer */}
+        <SidebarOrganizationDrawer open={isOrganizationDrawerOpen} onClose={handleOrganizationDrawerClose} />
       </div>
     );
   }
 
-  if(!isLoaded){
-    return <Sidebarskeleton />
+  if (!isLoaded) {
+    return <Sidebarskeleton />;
   }
-
 }

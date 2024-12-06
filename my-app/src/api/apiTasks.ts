@@ -21,3 +21,10 @@ export const getSidebarConfig = async (token, _, userId) => {
     return null; // Handle unexpected errors
   }
 };
+
+export const addTasks = (token,_, taskData) => {
+  // Add tasks to the sidebar
+  const supabase = createClient(token)
+
+  const {}
+}
