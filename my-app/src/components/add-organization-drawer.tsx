@@ -14,11 +14,15 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import useFetch from "@/hooks/use-fetch"
+import { createOrganization } from "@/api/apiOrganization"
+import { useUser } from "@clerk/nextjs"
 
 export function SidebarOrganizationDrawer({ open, onClose }) {
   const [name, setName] = React.useState("")
   const [icon, setIcon] = React.useState<File | null>(null)
-
+  const [description, setDescription] = React.useState("") // Adding description
+  const {user, isLoaded} = useUser();
   const handleIconChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null
     setIcon(file)
@@ -27,10 +31,21 @@ export function SidebarOrganizationDrawer({ open, onClose }) {
   const handleSave = () => {
     // Handle saving the organization option with the icon
     console.log("Saved organization:", { name, icon })
+
+    const payLoad = {
+      user_id: user?.id,
+      organization: name,
+      description: description,
+      organizationIcon: icon,
+    }
+
+    fnOrg(payLoad)
   }
 
+  const { data, error, loading, fn: fnOrg } = useFetch(createOrganization);
+
   return (
-    <Drawer open={open} onClose={close}>
+    <Drawer open={open} onClose={onClose}>
       <DrawerTrigger asChild>
         <Button variant="outline" className="text-white">Add Organization</Button>
       </DrawerTrigger>
@@ -52,6 +67,18 @@ export function SidebarOrganizationDrawer({ open, onClose }) {
                 className="bg-black text-white border border-zinc-600 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
+            {/* Organization Description */}
+            <div>
+              <Label htmlFor="description">Description</Label>
+              <Input
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Enter a description"
+                className="bg-black text-white border border-zinc-600 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+            {/* File Input */}
             <div>
               <Label htmlFor="icon">Upload Icon</Label>
               <Input

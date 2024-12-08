@@ -17,4 +17,3 @@ This is a full-stack web application for managing tasks, featuring user authenti
 - **Database**: Not implemented yet (can be integrated with Supabase or PostgreSQL)
 - **State Management**: React Context API (optional)
 
-- 

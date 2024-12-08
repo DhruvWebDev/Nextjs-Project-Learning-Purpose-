@@ -5,17 +5,31 @@ import { Drawer, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerT
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import useFetch from '@/hooks/use-fetch';
+import { addOptions } from '@/api/apiSidebar';
+import { useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 
 export function SidebarOptionsDrawer({ open, close }) {
+  const router = useRouter();
   const [name, setName] = React.useState('');
   const [file, setFile] = React.useState(null);
-
+  const {user, isLoaded}= useUser();
+  const {data, error, loading, fn:fnOption} = useFetch(addOptions);
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
   const handleSave = () => {
     console.log('Saved option:', { name, file });
+    const payLoad = {
+      user_id: user?.id,
+      optionIcon:file,
+      options: name,
+    }
+    fnOption(payLoad)
+    console.log(data);
+    router.push(`/tasks/option/options/${name}`)
     // Additional logic to handle the uploaded file can be added here
   };
 
@@ -63,7 +77,7 @@ export function SidebarOptionsDrawer({ open, close }) {
           <DrawerFooter>
             <Button onClick={handleSave}>Save</Button>
             <DrawerClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="destructive">Cancel</Button>
             </DrawerClose>
           </DrawerFooter>
         </div>

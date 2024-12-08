@@ -17,9 +17,9 @@ import { SidebarOrganizationDrawer } from './add-organization-drawer';
 
 const mainNavItems = [   
   { id: 'dashboard', label: 'Dashboard', icon: LayoutGrid, path: '/tasks' },   
-  { id: 'today', label: 'Today', icon: Calendar, path: '/tasks/today' },   
-  { id: 'upcoming', label: 'Upcoming', icon: Clock, path: '/tasks/upcoming' },   
-  { id: 'completed', label: 'Completed', icon: CheckCircle2, path: '/tasks/completed' }, 
+  { id: 'today', label: 'Today', icon: Calendar, path: '/tasks/option/options/today' },   
+  { id: 'upcoming', label: 'Upcoming', icon: Clock, path: '/tasks/option/options/upcoming' },   
+  { id: 'completed', label: 'Completed', icon: CheckCircle2, path: '/tasks/option/options/completed' }, 
 ];
 
 export function Sidebar() {   
