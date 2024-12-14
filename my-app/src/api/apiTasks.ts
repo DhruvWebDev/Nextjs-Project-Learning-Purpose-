@@ -1,30 +1,68 @@
 import { createClient } from "@/utils/supabase/client";
 
-const supabase = createClient();
+// TaskRequirement: user_id, label, text, id, completed
 
-export const getSidebarConfig = async (token, _, userId) => {
-  try {
-    // Replace "tasks" with your actual table name
-    const { data, error } = await supabase
-      .from("tasks") // Replace "tasks" with your table name
-      .select("*")   // Fetch all columns
-      .eq("user_id", userId); // Filter where user_id equals userId
+// Fetch tasks
+export const getTaskData = async (token, _, taskRequirement) => {
+  const supabase = createClient(token);
 
-    if (error) {
-      console.error("Error fetching tasks:", error);
-      return null; // Handle the error gracefully
-    }
+  const { data: taskData, error: fetchingTaskError } = await supabase
+    .from("tasks")
+    .select("*")
+    .eq("user_id", taskRequirement.user_id)
+    .eq("labels", taskRequirement.label);
 
-    return data; // Return the filtered tasks
-  } catch (err) {
-    console.error("Unexpected error:", err);
-    return null; // Handle unexpected errors
+  if (fetchingTaskError) {
+    console.error("Error fetching tasks", fetchingTaskError);
   }
+
+  return taskData;
 };
 
-export const addTasks = (token,_, taskData) => {
-  // Add tasks to the sidebar
-  const supabase = createClient(token)
+// Add a new task
+export const addTask = async (token, _, taskRequirement) => {
+  const supabase = createClient(token);
 
-  const {}
-}
+  const { data: addedTaskData, error: uploadingTaskError } = await supabase
+    .from("tasks")
+    .insert([taskRequirement])
+    .select();
+
+  if (uploadingTaskError) {
+    console.error("Error adding tasks", uploadingTaskError);
+  }
+
+  return addedTaskData;
+};
+
+// Delete a task
+export const deleteTask = async (token, _, taskId) => {
+  const supabase = createClient(token);
+
+  const { data: deletedTaskData, error: deletingTaskError } = await supabase
+    .from("tasks")
+    .delete()
+    .eq("id", taskId);
+
+  if (deletingTaskError) {
+    console.error("Error deleting task", deletingTaskError);
+  }
+
+  return deletedTaskData;
+};
+
+// Update a task
+export const updateTask = async (token, _, { id, ...updateFields }) => {
+  const supabase = createClient(token);
+
+  const { data: updatedTaskData, error: updatingTaskError } = await supabase
+    .from("tasks")
+    .update(updateFields) // Pass fields to update, e.g., { completed: true }
+    .eq("id", id);
+
+  if (updatingTaskError) {
+    console.error("Error updating task", updatingTaskError);
+  }
+
+  return updatedTaskData;
+};

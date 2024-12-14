@@ -28,6 +28,9 @@ export function SidebarOrganizationDrawer({ open, onClose }) {
     setIcon(file)
   }
 
+  const { data, error, loading, fn: fnOrg } = useFetch(createOrganization);
+
+  
   const handleSave = () => {
     // Handle saving the organization option with the icon
     console.log("Saved organization:", { name, icon })
@@ -42,7 +45,6 @@ export function SidebarOrganizationDrawer({ open, onClose }) {
     fnOrg(payLoad)
   }
 
-  const { data, error, loading, fn: fnOrg } = useFetch(createOrganization);
 
   return (
     <Drawer open={open} onClose={onClose}>

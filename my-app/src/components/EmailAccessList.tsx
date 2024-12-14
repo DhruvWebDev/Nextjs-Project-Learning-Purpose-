@@ -1,0 +1,34 @@
+'use client';
+import { removeEmailFromRoom} from "@/actions/taskActions";
+import {faTrash} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {RoomAccesses} from "@liveblocks/node";
+import {useRouter} from "next/navigation";
+import { Button } from "./ui/button";
+
+export default function EmailsAccessList({
+  boardId,usersAccesses,
+}:{
+  boardId:string,
+  usersAccesses:RoomAccesses,
+}) {
+  const router = useRouter();
+  async function handleDelete(emailToDelete:string) {
+    await removeEmailFromRoom(boardId, emailToDelete);
+    router.refresh();
+  }
+  return (
+    <div className="max-w-xs">
+      {Object.keys(usersAccesses).map(email => (
+        <div
+          key={email}
+          className="flex gap-2 my-4 items-center max-w-xs justify-between border rounded-lg pl-4">
+          {email}
+          <Button className="btn p-1" onClick={() => handleDelete(email)}>
+            <FontAwesomeIcon icon={faTrash} />
+          </Button>
+        </div>
+      ))}
+    </div>
+  );
+}
