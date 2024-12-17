@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import useFetch from "@/hooks/use-fetch"
-import { createOrganization } from "@/api/apiOrganization"
+// import { createOrganization } from "@/api/apiOrganization"
 import { useUser } from "@clerk/nextjs"
 
 export function SidebarOrganizationDrawer({ open, onClose }) {
@@ -28,7 +28,7 @@ export function SidebarOrganizationDrawer({ open, onClose }) {
     setIcon(file)
   }
 
-  const { data, error, loading, fn: fnOrg } = useFetch(createOrganization);
+  // const { data, error, loading, fn: fnOrg } = useFetch(createOrganization);
 
   
   const handleSave = () => {
@@ -42,7 +42,7 @@ export function SidebarOrganizationDrawer({ open, onClose }) {
       organizationIcon: icon,
     }
 
-    fnOrg(payLoad)
+    // fnOrg(payLoad)
   }
 
 

@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import useFetch from '@/hooks/use-fetch';
-import { addOptions } from '@/api/apiSidebar';
+// import { addOptions } from '@/api/apiSidebar';
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 
@@ -15,7 +15,7 @@ export function SidebarOptionsDrawer({ open, close }) {
   const [name, setName] = React.useState('');
   const [file, setFile] = React.useState(null);
   const {user, isLoaded}= useUser();
-  const {data, error, loading, fn:fnOption} = useFetch(addOptions);
+  // const {data, error, loading, fn:fnOption} = useFetch(addOptions);
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
@@ -27,7 +27,7 @@ export function SidebarOptionsDrawer({ open, close }) {
       optionIcon:file,
       options: name,
     }
-    fnOption(payLoad)
+    // fnOption(payLoad)
     console.log(data);
     router.push(`/tasks/option/options/${name}`)
     // Additional logic to handle the uploaded file can be added here

@@ -8,7 +8,6 @@ import { Separator } from '@/components/ui/separator';
 import Link from 'next/link'; 
 import { useRouter } from 'next/navigation'; 
 import useFetch from '@/hooks/use-fetch';
-import { getSidebar } from '@/api/apiSidebar';
 import { useUser } from '@clerk/nextjs';
 import { useEffect, useState } from 'react';
 import { Sidebarskeleton } from './sidebarSkeleton';
@@ -25,9 +24,9 @@ const mainNavItems = [
 export function Sidebar() {   
   const router = useRouter();   
   const { user, isLoaded } = useUser();
-  const { data: sidebarData, error, loading: loadingSidebarConfig, fn: fnSidebar } = useFetch(getSidebar, {
-    user_id: user?.id,
-  });
+  // const { data: sidebarData, error, loading: loadingSidebarConfig, fn: fnSidebar } = useFetch(getSidebar, {
+  //   user_id: user?.id,
+  // });
 
   const [isOptionsDrawerOpen, setOptionsDrawerOpen] = useState(false);
   const [isOrganizationDrawerOpen, setOrganizationDrawerOpen] = useState(false);

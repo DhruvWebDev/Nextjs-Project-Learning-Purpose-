@@ -38,31 +38,33 @@ export const addTask = async (token, _, taskRequirement) => {
 // Delete a task
 export const deleteTask = async (token, _, taskId) => {
   const supabase = createClient(token);
-
+  console.log("Id of the task", taskId)
   const { data: deletedTaskData, error: deletingTaskError } = await supabase
     .from("tasks")
     .delete()
-    .eq("id", taskId);
+    .eq("id", taskId?.todoId);
 
   if (deletingTaskError) {
     console.error("Error deleting task", deletingTaskError);
   }
+  console.log(deletedTaskData)
 
   return deletedTaskData;
 };
 
 // Update a task
-export const updateTask = async (token, _, { id, ...updateFields }) => {
+export const updateTask = async (token, _, { id, ...completed }) => {
   const supabase = createClient(token);
+  console.log(id,completed)
 
   const { data: updatedTaskData, error: updatingTaskError } = await supabase
     .from("tasks")
-    .update(updateFields) // Pass fields to update, e.g., { completed: true }
+    .update(completed) // Pass fields to update, e.g., { completed: true }
     .eq("id", id);
 
   if (updatingTaskError) {
     console.error("Error updating task", updatingTaskError);
   }
-
+  console.log(updatedTaskData)
   return updatedTaskData;
 };
